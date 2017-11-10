@@ -1,0 +1,16 @@
+-- Three map tiers --
+    - local: shop, building
+    - zone: town, forest
+    - world map
+
+-- Main Goal --
+    - Holy Grail
+    - set by player?
+
+-- Required world interactions --
+    - Own shop
+    - Start Family
+    - Run band of heros, bandits
+    - Control township/guild: mayor. king, merchant
+
+- Survival aspects -- eating?

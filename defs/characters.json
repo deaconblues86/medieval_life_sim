@@ -1,0 +1,42 @@
+{
+    "default": {
+        "speed": 20,
+        "height": 40
+    },
+    "player": {
+        "image": [
+            ["head1.png"],
+            ["eyes1.png"],
+            ["hair1.png", "black"]
+        ],
+        "speed": 40
+    },
+    "knight": {
+        "image": "knight.png",
+        "speed": 20,
+        "spawn_zones": [
+            {"type": "developed", "weight": 1.0},
+            {"type": "undeveloped", "weight": 0.5}
+        ]
+    },
+    "wizard": {
+        "image": "wizard.png",
+        "speed": 30
+    },
+    "huntsman": {
+        "image": "huntsman.jpg",
+        "speed": 40,
+        "spawn_zones": [
+            {"type": "developed", "weight": 0.5},
+            {"type": "undeveloped", "weight": 1.0}
+        ]
+    },
+    "ball": {
+        "image": "ball.gif",
+        "speed": 40,
+        "spawn_zones": [
+            {"type": "developed", "weight": 0.5},
+            {"type": "undeveloped", "weight": 1.0}
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "developed": [
+        "shop",
+        "village",
+        "town",
+        "city",
+        "farm",
+        "castle"
+    ],
+    "undeveloped": [
+        "wood",
+        "forest",
+        "mountain",
+        "swamp",
+        "ruin"
+    ]
+}
