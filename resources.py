@@ -99,6 +99,7 @@ class player_object(base_object):
         for s in self.sprites():
             s.update = self.update
 
+    # Apparently this updates actually called?  REFACTOR:  Better than calling update on every spite in base_objects
     def update(self, *args):
         pass
 

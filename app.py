@@ -73,21 +73,18 @@ def main():
         scrolling = False
         best_move = (x_direction, y_direction)
         if x_direction or y_direction:
-            # if not any([edges.contains(player.rect) for edges in PLAYERBOUNDS]):
-                comp = [x for x in PLAYERBOUNDS if not x.contains(player.rect)]
-                print(comp)
-                player_buffer = all(map(lambda x: check_move_bounds(player, x, x_direction, y_direction, relation_to_bounds="exclusion")[0], comp))
-                if player_buffer:
-                    player.move(x_direction, y_direction)
+            comp = [x for x in PLAYERBOUNDS if not x.contains(player.rect)]
+            print(comp)
+            player_buffer = all(map(lambda x: check_move_bounds(player, x, x_direction, y_direction, relation_to_bounds="exclusion")[0], comp))
+            if player_buffer:
+                player.move(x_direction, y_direction)
+            else:
+                print("scrolling")
+                scrolling, best_move = check_move_bounds(ZONERECT, SCREENRECT, x_direction * -1, y_direction * -1)
+                if scrolling:
+                    ZONERECT = scrolling
                 else:
-                    print("scrolling")
-                    scrolling, best_move = check_move_bounds(ZONERECT, SCREENRECT, x_direction * -1, y_direction * -1)
-                    if scrolling:
-                        ZONERECT = scrolling
-                    else:
-                        player.move(x_direction, y_direction)
-            # else:
-            #     player.move(x_direction, y_direction)
+                    player.move(x_direction, y_direction)
 
         allsprites.update(*best_move, scrolling)
 
