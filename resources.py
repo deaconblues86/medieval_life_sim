@@ -1,4 +1,5 @@
 import pygame
+from functools import reduce
 from helpers import (
     load_image
     )
@@ -56,6 +57,22 @@ class base_object(pygame.sprite.AbstractGroup):
         if not isinstance(image, list):
             image = [image]
         self.add([base_sprite(pos, *i, **kwargs) for i in image])
+        self.update_self()
+
+    def update_self(self):
+        self.rect = reduce(lambda x, y: x.union(y), [s.rect for s in self.sprites()])
+
+    def contains(self, obj):
+        if isinstance(obj, pygame.Rect):
+            if all([s.rect.contains(obj) for s in self.sprites()]):
+                return True
+            else:
+                return False
+        elif isinstance(obj, base_object):
+            if all(map(lambda x: x[0].rect.contains(x[1].rect), zip(self.sprites(), obj.sprites()))):
+                return True
+            else:
+                return False
 
 
 class drifting_object(base_object):
@@ -89,8 +106,4 @@ class player_object(base_object):
         for s in self.sprites():
             s.rect.move_ip(x_direction*self.speed, y_direction*self.speed)
             s.rect = s.rect.clamp(SCREENRECT)
-        # self.rect = self.rect.clamp(SCREENRECT)
-        # if direction < 0:
-        #     self.image = self.images[0]
-        # elif direction > 0:
-        #     self.image = self.images[1]
+        self.update_self()

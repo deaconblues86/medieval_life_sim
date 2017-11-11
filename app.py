@@ -6,7 +6,7 @@ from helpers import (
     load_json_def,
     extract_from_dict,
     extract_random_from_dict,
-    scroll_zone
+    check_move_bounds
     )
 from resources import (
     cursor,
@@ -16,11 +16,13 @@ from resources import (
     )
 from constants import (
     SCREENRECT,
+    PLAYERBOUNDS,
     ZONERECT
     )
 
-
 def main():
+    global ZONERECT
+
     pygame.init()
     screen = pygame.display.set_mode(SCREENRECT.size)
     pygame.display.set_caption('Life Sim')
@@ -40,7 +42,6 @@ def main():
     test = drifting_object(pos=(100, 0), **create)
 
     p = extract_from_dict("player", characters, char_default)
-    print(SCREENRECT.center)
     player = player_object(pos=SCREENRECT.center, **p)
 
     balls = []
@@ -69,9 +70,26 @@ def main():
         x_direction = keystate[pygame.K_RIGHT] - keystate[pygame.K_LEFT]
         y_direction = keystate[pygame.K_DOWN] - keystate[pygame.K_UP]
 
-        scrolling = scroll_zone(x_direction * -1, y_direction * -1)
-        allsprites.update(x_direction * -1, y_direction * -1, scrolling)
-        player.move(x_direction, y_direction)
+        scrolling = False
+        best_move = (x_direction, y_direction)
+        if x_direction or y_direction:
+            # if not any([edges.contains(player.rect) for edges in PLAYERBOUNDS]):
+                comp = [x for x in PLAYERBOUNDS if not x.contains(player.rect)]
+                print(comp)
+                player_buffer = all(map(lambda x: check_move_bounds(player, x, x_direction, y_direction, relation_to_bounds="exclusion")[0], comp))
+                if player_buffer:
+                    player.move(x_direction, y_direction)
+                else:
+                    print("scrolling")
+                    scrolling, best_move = check_move_bounds(ZONERECT, SCREENRECT, x_direction * -1, y_direction * -1)
+                    if scrolling:
+                        ZONERECT = scrolling
+                    else:
+                        player.move(x_direction, y_direction)
+            # else:
+            #     player.move(x_direction, y_direction)
+
+        allsprites.update(*best_move, scrolling)
 
         allsprites.draw(screen)
         pygame.display.flip()

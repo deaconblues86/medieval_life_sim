@@ -84,14 +84,47 @@ def load_sound(name):
     return sound
 
 
-def scroll_zone(x_direction, y_direction):
-    global ZONERECT
+def check_move_bounds(scrolling, bounds, x_direction, y_direction, relation_to_bounds='surrounds'):
     if x_direction or y_direction:
-        m = ZONERECT.move(x_direction*speed, y_direction*speed)
-        if not m.contains(SCREENRECT):
-            return False
-        ZONERECT = m
+        if isinstance(scrolling, pygame.Rect):
+            rect_to_move = scrolling
+            # m = scrolling.move(x_direction*speed, y_direction*speed)
 
-        print(ZONERECT.left, ZONERECT.right, ZONERECT.top, ZONERECT.bottom)
-        print(SCREENRECT.left, SCREENRECT.right, SCREENRECT.top, SCREENRECT.bottom)
-        return True
+        else:
+            rect_to_move = scrolling.rect
+            # m = scrolling.rect.move(x_direction*speed, y_direction*speed)
+
+        possibilities = []
+        m = rect_to_move.move(x_direction*speed, y_direction*speed)
+        if x_direction and y_direction:
+            possibilities = {
+                (x_direction, 0): rect_to_move.move(x_direction*speed, 0),
+                (0, y_direction): rect_to_move.move(0, y_direction*speed)
+                }
+
+        if relation_to_bounds == "surrounds":
+            if m.contains(bounds):
+                scrolling = m, (x_direction, y_direction)
+            else:
+                try:
+                    scrolling = [p for p in possibilities if possibilities[p].contains(bounds)]
+                    scrolling = (possibilities[scrolling[0]], scrolling[0])
+                except IndexError:
+                    return False, (x_direction, y_direction)
+
+        elif relation_to_bounds == "within":
+            if bounds.contains(m):
+                scrolling = m, (x_direction, y_direction)
+            else:
+                try:
+                    scrolling = [p for p in possibilities if bounds.contains(possibilities[p])]
+                    scrolling = (possibilities[scrolling[0]], scrolling[0])
+                except IndexError:
+                    return False, (x_direction, y_direction)
+
+        elif relation_to_bounds == "exclusion":
+            if bounds.contains(m):
+                return False, (x_direction, y_direction)
+            scrolling = m, (x_direction, y_direction)
+
+        return scrolling
