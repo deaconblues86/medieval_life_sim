@@ -1,5 +1,6 @@
 import pygame
 import random
+from functools import reduce
 from helpers import (
     load_image,
     load_sound,
@@ -70,29 +71,26 @@ def main():
         x_direction = keystate[pygame.K_RIGHT] - keystate[pygame.K_LEFT]
         y_direction = keystate[pygame.K_DOWN] - keystate[pygame.K_UP]
 
+        view_x_direction = -1 * (keystate[pygame.K_d] - keystate[pygame.K_a])
+        view_y_direction = -1 * (keystate[pygame.K_s] - keystate[pygame.K_w])
+
         scrolling = False
-        best_move = (x_direction, y_direction)
-        if x_direction or y_direction:
-            comp = [x for x in PLAYERBOUNDS if not x.contains(player.rect)]
-            print(comp)
-            player_buffer = all(map(lambda x: check_move_bounds(player, x, x_direction, y_direction, relation_to_bounds="exclusion")[0], comp))
-            if player_buffer:
-                player.move(x_direction, y_direction)
-            else:
-                print("scrolling")
-                scrolling, best_move = check_move_bounds(ZONERECT, SCREENRECT, x_direction * -1, y_direction * -1)
-                if scrolling:
-                    ZONERECT = scrolling
-                else:
-                    player.move(x_direction, y_direction)
+        req_move = (x_direction, y_direction)
+        best_move = view_move = (view_x_direction, view_y_direction)
+        if view_x_direction or view_y_direction:
+            scrolling, best_move = check_move_bounds(ZONERECT, SCREENRECT, *(view_move))
+            if scrolling:
+                ZONERECT = scrolling
 
         allsprites.update(*best_move, scrolling)
+        player.move(*req_move)
 
         allsprites.draw(screen)
         pygame.display.flip()
         # pygame.display.update(dirty)
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()

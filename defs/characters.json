@@ -1,6 +1,6 @@
 {
     "default": {
-        "speed": 2,
+        "speed": 3,
         "height": 40
     },
     "player": {

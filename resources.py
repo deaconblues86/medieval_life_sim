@@ -96,14 +96,16 @@ class player_object(base_object):
     def __init__(self, pos, image, **kwargs):
         super().__init__(pos, image)
         self.speed = kwargs["speed"]
-        for s in self.sprites():
-            s.update = self.update
+        # for s in self.sprites():
+        #     s.update = self.update
 
     # Apparently this updates actually called?  REFACTOR:  Better than calling update on every spite in base_objects
-    def update(self, *args):
-        pass
+    # def update(self, *args):
+    #     pass
 
     def move(self, x_direction, y_direction):
+        # Moves player character sprites based on input
+        # True up platyer_object rect afterwards
         for s in self.sprites():
             s.rect.move_ip(x_direction*self.speed, y_direction*self.speed)
             s.rect = s.rect.clamp(SCREENRECT)
