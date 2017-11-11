@@ -2,6 +2,10 @@ import pygame
 from helpers import (
     load_image
     )
+from constants import(
+    SCREENRECT,
+    ZONERECT,
+    speed)
 
 
 class cursor(pygame.sprite.Sprite):
@@ -32,24 +36,61 @@ class cursor(pygame.sprite.Sprite):
 
 class base_sprite(pygame.sprite.Sprite):
     """ Accepts image, and optional color/blend arg """
-    def __init__(self, *image_args):
+    def __init__(self, pos, *image_args, **kwargs):
         super().__init__()
+        self.name = image_args[0]
         self.image = load_image(*image_args)
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect(center=pos)
 
-    def update(self):
-        self._move()
+    def update(self, *args):
+        self._move(*args)
 
-    def _move(self):
-        self.rect.move_ip(1, 0)
-        if self.rect.right > 1024:
-            self.rect.left = 0
+    def _move(self, x_direction, y_direction, scolling):
+        if scolling:
+            self.rect.move_ip(x_direction*speed, y_direction*speed)
 
 
 class base_object(pygame.sprite.AbstractGroup):
-    def __init__(self, image, **kwargs):
+    def __init__(self, pos, image, **kwargs):
         super().__init__()
         if not isinstance(image, list):
             image = [image]
+        self.add([base_sprite(pos, *i, **kwargs) for i in image])
 
-        self.add([base_sprite(*i) for i in image])
+
+class drifting_object(base_object):
+    def __init__(self, pos, image, **kwargs):
+        super().__init__(pos, image)
+        self.speed = 1
+        for s in self.sprites():
+            s.update = self.update
+
+    def update(self, *args):
+        self._move()
+
+    def _move(self):
+        for s in self.sprites():
+            s.rect.move_ip(self.speed, 0)
+            if s.rect.right > SCREENRECT.right:
+                s.rect.left = 0
+
+
+class player_object(base_object):
+    def __init__(self, pos, image, **kwargs):
+        super().__init__(pos, image)
+        self.speed = kwargs["speed"]
+        for s in self.sprites():
+            s.update = self.update
+
+    def update(self, *args):
+        pass
+
+    def move(self, x_direction, y_direction):
+        for s in self.sprites():
+            s.rect.move_ip(x_direction*self.speed, y_direction*self.speed)
+            s.rect = s.rect.clamp(SCREENRECT)
+        # self.rect = self.rect.clamp(SCREENRECT)
+        # if direction < 0:
+        #     self.image = self.images[0]
+        # elif direction > 0:
+        #     self.image = self.images[1]

@@ -14,7 +14,10 @@ from pygame.locals import (
 from constants import (
     image_dir,
     def_dir,
-    audio_dir
+    audio_dir,
+    ZONERECT,
+    SCREENRECT,
+    speed,
     )
 
 
@@ -32,8 +35,14 @@ def load_json_def(name):
     return content, default
 
 
+def extract_from_dict(req_type, content, default):
+    create = default
+    create.update(content[req_type])
+    return create
+
+
 def extract_random_from_dict(content, default):
-    types = [x for x in content if x == "player"]
+    types = [x for x in content]
     index = random.randint(0, len(types) - 1)
     create = default
     create.update(content[types[index]])
@@ -73,3 +82,16 @@ def load_sound(name):
         raise SystemExit
 
     return sound
+
+
+def scroll_zone(x_direction, y_direction):
+    global ZONERECT
+    if x_direction or y_direction:
+        m = ZONERECT.move(x_direction*speed, y_direction*speed)
+        if not m.contains(SCREENRECT):
+            return False
+        ZONERECT = m
+
+        print(ZONERECT.left, ZONERECT.right, ZONERECT.top, ZONERECT.bottom)
+        print(SCREENRECT.left, SCREENRECT.right, SCREENRECT.top, SCREENRECT.bottom)
+        return True
