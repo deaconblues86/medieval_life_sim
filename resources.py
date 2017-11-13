@@ -35,6 +35,47 @@ class cursor(pygame.sprite.Sprite):
         self.clicking = 0
 
 
+class interact_window(pygame.sprite.Sprite):
+    def __init__(self, target, image=None):
+        super().__init__()
+        # self.image = load_image(cursor_image, -1)
+        self.target = target
+        self.interactions = ["test1", "test2", "test3", "test4", "quit"]
+        self.image = pygame.Surface((200, 100))
+        self.rect = self.image.get_rect()
+
+        self.font = pygame.font.Font(None, 20)
+        self.color = pygame.Color('white')
+        self.selection = pygame.Color('yellow')
+
+        self.options = []
+        for i in self.interactions:
+            self.options.append(i)
+
+        self.offset = 0
+        self.update(None)
+
+    def update(self, key_press):
+        if key_press == "down":
+            self.offset += 1
+        elif key_press == "up":
+            self.offset -= 1
+
+        if self.offset < 0:
+            self.offset = 0
+
+        pos = 0
+        self.offset = min(self.offset, len(self.options) - 1)
+        self.image.fill((100, 50, 0))
+        for x in range(min(self.offset, len(self.options) - 2), min(self.offset + 2, len(self.options))):
+            color = self.color
+            if x == self.offset:
+                color = self.selection
+            option = self.font.render(self.interactions[x], 0, color)
+            self.image.blit(option, (0, pos * 50))
+            pos += 1
+
+
 class base_sprite(pygame.sprite.Sprite):
     """ Accepts image, and optional color/blend arg """
     def __init__(self, pos, *image_args, **kwargs):

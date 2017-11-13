@@ -14,3 +14,21 @@
     - Control township/guild: mayor. king, merchant
 
 - Survival aspects -- eating?
+
+-- "Shop" Ownership --
+    - choose wares
+    - this influences who comes
+    - npcs spawn in doorway
+    - amble about from display to display
+    - may approach player and give info
+    - ability to customize look of shop
+    - shop includes tavern, inn, etc
+
+
+-- Generic Action function -- 
+    - all actions have actor and target
+    - all actions will have base stats to compare on both actor and target
+    - possible addtion of modifiers to base values
+    - die type in roll
+    - All of which, save actor and target, can be passed via json
+    - simple look up of held items could be matched via action tags if they influence

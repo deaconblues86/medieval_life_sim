@@ -13,7 +13,8 @@ from resources import (
     cursor,
     base_object,
     player_object,
-    drifting_object
+    drifting_object,
+    interact_window
     )
 from constants import (
     SCREENRECT,
@@ -21,12 +22,13 @@ from constants import (
     ZONERECT
     )
 
+
 def main():
     global ZONERECT
 
     pygame.init()
     screen = pygame.display.set_mode(SCREENRECT.size)
-    pygame.display.set_caption('Life Sim')
+    pygame.display.set_caption('Medieval Life Sim')
     pygame.mouse.set_visible(1)
 
     # Loading background tiles
@@ -55,35 +57,62 @@ def main():
     print(allsprites.sprites())
     # Clock controls frame rate
     clock = pygame.time.Clock()
-    print(ZONERECT.left, ZONERECT.right, ZONERECT.top, ZONERECT.bottom)
-    print(SCREENRECT.left, SCREENRECT.right, SCREENRECT.top, SCREENRECT.bottom)
-    while 1:
+
+    interacting = False
+    while True:
         clock.tick(100)
+        # Handling Exit events separately
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 return
 
+        # Clean up screen and watch for events
         allsprites.clear(screen, background)
         keystate = pygame.key.get_pressed()
 
-        x_direction = keystate[pygame.K_RIGHT] - keystate[pygame.K_LEFT]
-        y_direction = keystate[pygame.K_DOWN] - keystate[pygame.K_UP]
+        # Checking for and handling interactions
+        if keystate[pygame.K_SPACE]:
+            index = player.rect.collidelist(allsprites.sprites())
+            if index is not None:
+                window = interact_window(allsprites.sprites()[index])
+                allsprites.add(window)
+                interacting = True
 
-        view_x_direction = -1 * (keystate[pygame.K_d] - keystate[pygame.K_a])
-        view_y_direction = -1 * (keystate[pygame.K_s] - keystate[pygame.K_w])
+        if interacting:
+            pygame.event.wait()
+            key_press = None
+            if keystate[pygame.K_DOWN]:
+                key_press = "down"
+            elif keystate[pygame.K_UP]:
+                key_press = "up"
+            elif keystate[pygame.K_ESCAPE]:
+                key_press = "escape"
+                interacting = False
 
-        scrolling = False
-        req_move = (x_direction, y_direction)
-        best_move = view_move = (view_x_direction, view_y_direction)
-        if view_x_direction or view_y_direction:
-            scrolling, best_move = check_move_bounds(ZONERECT, SCREENRECT, *(view_move))
-            if scrolling:
-                ZONERECT = scrolling
+            window.update(key_press)
+            if not interacting:
+                window.kill()
 
-        allsprites.update(*best_move, scrolling)
-        player.move(*req_move)
+        # if not interacting, operating under normal conditions
+        if not interacting:
+            x_direction = keystate[pygame.K_RIGHT] - keystate[pygame.K_LEFT]
+            y_direction = keystate[pygame.K_DOWN] - keystate[pygame.K_UP]
+
+            view_x_direction = -1 * (keystate[pygame.K_d] - keystate[pygame.K_a])
+            view_y_direction = -1 * (keystate[pygame.K_s] - keystate[pygame.K_w])
+
+            scrolling = False
+            req_move = (x_direction, y_direction)
+            best_move = view_move = (view_x_direction, view_y_direction)
+            if view_x_direction or view_y_direction:
+                scrolling, best_move = check_move_bounds(ZONERECT, SCREENRECT, *(view_move))
+                if scrolling:
+                    ZONERECT = scrolling
+
+            allsprites.update(*best_move, scrolling)
+            player.move(*req_move)
 
         allsprites.draw(screen)
         pygame.display.flip()
