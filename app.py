@@ -11,6 +11,7 @@ from helpers import (
     )
 from resources import (
     cursor,
+    base_sprite,
     base_object,
     player_object,
     drifting_object,
@@ -73,12 +74,17 @@ def main():
         keystate = pygame.key.get_pressed()
 
         # Checking for and handling interactions
-        if keystate[pygame.K_SPACE]:
-            index = player.rect.collidelist(allsprites.sprites())
-            if index is not None:
-                window = interact_window(allsprites.sprites()[index])
+        if not interacting and keystate[pygame.K_SPACE]:
+            target = player.rect.collidelistall(allsprites.sprites())
+            if target is not None:
+                # Creating selection of interactable Sprites in location
+                window = interact_window(None, options=[allsprites.sprites()[x] for x in target])
                 allsprites.add(window)
                 interacting = True
+
+                # target = allsprites.sprites()[target]
+                # window = interact_window(target)
+                # allsprites.add(window)
 
         if interacting:
             pygame.event.wait()
@@ -87,13 +93,23 @@ def main():
                 key_press = "down"
             elif keystate[pygame.K_UP]:
                 key_press = "up"
+            elif keystate[pygame.K_RETURN]:
+                key_press = "select"
             elif keystate[pygame.K_ESCAPE]:
-                key_press = "escape"
+                key_press = "exit"
                 interacting = False
 
-            window.update(key_press)
-            if not interacting:
+            choice = window.update(key_press)
+            if choice:
                 window.kill()
+                print(choice, target)
+                interacting = False
+                # If choice was what to interact with, continue interacting
+                if isinstance(choice, base_sprite):
+                    target = choice
+                    window = interact_window(choice)
+                    allsprites.add(window)
+                    interacting = True
 
         # if not interacting, operating under normal conditions
         if not interacting:

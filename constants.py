@@ -3,6 +3,7 @@ from pygame.rect import Rect
 image_dir = "img"
 def_dir = "defs"
 audio_dir = "audio"
+font_file = "fonts/monof55.ttf"
 screen_size = (1024, 768)
 speed = 4
 

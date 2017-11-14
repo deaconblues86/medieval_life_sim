@@ -1,12 +1,14 @@
 import pygame
+import os
 from functools import reduce
 from helpers import (
     load_image
     )
 from constants import(
+    font_file,
     SCREENRECT,
     ZONERECT,
-    speed)
+    speed,)
 
 
 class cursor(pygame.sprite.Sprite):
@@ -36,21 +38,25 @@ class cursor(pygame.sprite.Sprite):
 
 
 class interact_window(pygame.sprite.Sprite):
-    def __init__(self, target, image=None):
+    def __init__(self, target, options=None, image=None):
         super().__init__()
         # self.image = load_image(cursor_image, -1)
         self.target = target
-        self.interactions = ["test1", "test2", "test3", "test4", "quit"]
-        self.image = pygame.Surface((200, 100))
+        self.image = pygame.Surface((200, 150))
         self.rect = self.image.get_rect()
 
-        self.font = pygame.font.Font(None, 20)
+        self.font = pygame.font.Font(os.path.join(font_file), 20)
         self.color = pygame.Color('white')
         self.selection = pygame.Color('yellow')
 
-        self.options = []
-        for i in self.interactions:
-            self.options.append(i)
+        # Need to better define options vs interactions -- I believe they'll be different
+        if options:
+            self.options = self.interactions = options
+        else:
+            self.interactions = getattr(target, "interactions", ["test1", "test2", "test3", "test4", "quit"])
+            self.options = []
+            for i in self.interactions:
+                self.options.append(i)
 
         self.offset = 0
         self.update(None)
@@ -60,6 +66,8 @@ class interact_window(pygame.sprite.Sprite):
             self.offset += 1
         elif key_press == "up":
             self.offset -= 1
+        elif key_press == "select":
+            return self.interactions[self.offset]
 
         if self.offset < 0:
             self.offset = 0
@@ -67,12 +75,16 @@ class interact_window(pygame.sprite.Sprite):
         pos = 0
         self.offset = min(self.offset, len(self.options) - 1)
         self.image.fill((100, 50, 0))
-        for x in range(min(self.offset, len(self.options) - 2), min(self.offset + 2, len(self.options))):
+        for x in range(min(self.offset, len(self.options) - 3), min(self.offset + 3, len(self.options))):
             color = self.color
             if x == self.offset:
                 color = self.selection
-            option = self.font.render(self.interactions[x], 0, color)
-            self.image.blit(option, (0, pos * 50))
+            try:
+                option = self.font.render(self.interactions[x].name, 0, color)
+            except AttributeError:
+                option = self.font.render(self.interactions[x], 0, color)
+
+            self.image.blit(option, (10, (pos * 50) + 12))
             pos += 1
 
 
