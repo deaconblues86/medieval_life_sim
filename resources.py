@@ -52,8 +52,10 @@ class interact_window(pygame.sprite.Sprite):
         # Need to better define options vs interactions -- I believe they'll be different
         if options:
             self.options = self.interactions = options
+            self.options.append("quit")
         else:
-            self.interactions = getattr(target, "interactions", ["test1", "test2", "test3", "test4", "quit"])
+            self.interactions = getattr(target, "interactions", ["test1", "test2", "test3", "test4"])
+            self.interactions.append("quit")
             self.options = []
             for i in self.interactions:
                 self.options.append(i)
