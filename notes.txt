@@ -32,3 +32,12 @@
     - die type in roll
     - All of which, save actor and target, can be passed via json
     - simple look up of held items could be matched via action tags if they influence
+
+
+-- To Do --
+    - Need to track time -- seasons, growth
+        - implement seasonal checks/changes
+        - update tree json to handle growth
+
+-- item req actions --
+    - Currently planning to use an action emit attribute in json to enable actions requiring an item

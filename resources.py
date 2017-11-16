@@ -1,5 +1,6 @@
 import pygame
 import os
+import random
 from functools import reduce
 from helpers import (
     load_image
@@ -92,10 +93,16 @@ class interact_window(pygame.sprite.Sprite):
 
 class base_sprite(pygame.sprite.Sprite):
     """ Accepts image, and optional color/blend arg """
-    def __init__(self, pos, *image_args, **kwargs):
+    def __init__(self, pos, **components):
         super().__init__()
-        self.name = image_args[0]
-        self.image = load_image(*image_args)
+        images = components.get("images")
+        colors = components.get("colors")
+        blends = components.get("blends")
+        img = images[random.randint(0, len(images) - 1)] if images else "None"
+        img_color = colors[random.randint(0, len(colors) - 1)] if colors else None
+        img_blend = blends[random.randint(0, len(blends) - 1)] if blends else None
+        self.name = img
+        self.image = load_image(*(img, img_color, img_blend))
         self.rect = self.image.get_rect(center=pos)
 
     def update(self, *args):
@@ -107,11 +114,10 @@ class base_sprite(pygame.sprite.Sprite):
 
 
 class base_object(pygame.sprite.AbstractGroup):
-    def __init__(self, pos, image, **kwargs):
+    def __init__(self, pos, **kwargs):
         super().__init__()
-        if not isinstance(image, list):
-            image = [image]
-        self.add([base_sprite(pos, *i, **kwargs) for i in image])
+        components = kwargs["components"]
+        self.add([base_sprite(pos, **components[comp]) for comp in components])
         self.update_self()
 
     def update_self(self):
@@ -131,8 +137,8 @@ class base_object(pygame.sprite.AbstractGroup):
 
 
 class drifting_object(base_object):
-    def __init__(self, pos, image, **kwargs):
-        super().__init__(pos, image)
+    def __init__(self, pos, **kwargs):
+        super().__init__(pos, **kwargs)
         self.speed = 1
         for s in self.sprites():
             s.update = self.update
@@ -148,8 +154,8 @@ class drifting_object(base_object):
 
 
 class player_object(base_object):
-    def __init__(self, pos, image, **kwargs):
-        super().__init__(pos, image)
+    def __init__(self, pos, **kwargs):
+        super().__init__(pos, **kwargs)
         self.speed = kwargs["speed"]
         # for s in self.sprites():
         #     s.update = self.update

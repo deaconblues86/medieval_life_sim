@@ -4,44 +4,88 @@
         "height": 40
     },
     "player": {
-        "image": [
-            ["head1.png"],
-            ["face1.png"],
-            ["hair1.png"],
-            ["peasent1.png"]
-        ]
+        "components": {
+            "head": {
+                "images": ["head1.png"]
+            },
+            "face": {
+                "images": ["face1.png"]
+            },
+            "adornment": {
+                "images": ["hair1.png"]
+            },
+            "body": {
+                "images": ["peasent1.png"]
+            }
+        }
     },
     "knight": {
-        "image": [
-            ["knight.png"]
-        ],
+        "_comment": "images aside, need to differentiate between armor stats regardless of image",
+        "components": {
+            "head": {
+                "images": ["head1.png", "head2.png"]
+            },
+            "face": {
+                "images": ["face1.png", "face2.png"]
+            },
+            "adornment": {
+                "images": ["helm1.png", "helm2.png"]
+            },
+            "body": {
+                "images": ["armor1.png", "armor2.png"]
+            }
+        },
         "spawn_zones": [
             {"type": "developed", "weight": 1.0},
             {"type": "undeveloped", "weight": 0.5}
         ]
     },
     "wizard": {
-        "image": [
-            ["wizard.png"]
-        ],
+        "components": {
+            "head": {
+                "images": ["head1.png", "head2.png"]
+            },
+            "face": {
+                "images": ["face1.png", "face2.png"]
+            },
+            "adornment": {
+                "images": ["wizardhat1.png", "wizardhat2.png"]
+            },
+            "body": {
+                "images": ["robes1.png", "robes2.png"]
+            }
+        },
         "spawn_zones": [
             {"type": "developed", "weight": 0.5},
             {"type": "undeveloped", "weight": 1.0}
         ]
     },
     "huntsman": {
-        "image": [
-            ["huntsman.jpg"]
-        ],
+        "components": {
+            "head": {
+                "images": ["head1.png", "head2.png"]
+            },
+            "face": {
+                "images": ["face1.png", "face2.png"]
+            },
+            "adornment": {
+                "images": ["cap1.png", "hat2.png"]
+            },
+            "body": {
+                "images": ["leather1.png", "leather2.png"]
+            }
+        },
         "spawn_zones": [
             {"type": "developed", "weight": 0.5},
             {"type": "undeveloped", "weight": 1.0}
         ]
     },
     "ball": {
-        "image": [
-            ["ball.gif"]
-        ],
+        "components": {
+            "body": {
+                "images": ["ball.gif"]
+            }
+        },
         "spawn_zones": [
             {"type": "developed", "weight": 0.5},
             {"type": "undeveloped", "weight": 1.0}

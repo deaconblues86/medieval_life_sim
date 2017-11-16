@@ -1,0 +1,71 @@
+{
+    "evergreen": {
+        "images": ["evergreen1.png", "evergreen2.png"],
+        "colors": ["light_green", "dark_green", "light_brown", "dark_brown"],
+        "interactions": {
+            "burn": {
+                "requires_match": true,
+                "produces": ["charcoal", "ash"],
+                "destroys": true
+            },
+            "harvest": {
+                "produces": ["pinecone"],
+                "destroys": false,
+                "seasons": ["fall", "winter"]
+            },
+            "chop": {
+                "requires_match": true,
+                "produces": ["wood"],
+                "destroys": true
+            },
+            "saw": {
+                "requires_match": true,
+                "produces": ["wood"],
+                "destroys": true
+            }
+        },
+        "seasonal": {
+            "fall" : {
+                "spawns": ["pinecone"]
+            },
+            "winter" : {
+                "spawns": ["pinecone"]
+            }
+        }
+    },
+    "deciduous": {
+        "images": ["deciduous1.png", "deciduous2.png"],
+        "colors": ["light_green", "dark_green", "light_brown", "dark_brown"],
+        "interactions": {
+            "burn": {
+                "requires_match": true,
+                "produces": ["charcoal", "ash"],
+                "destroys": true
+            },
+            "harvest": {
+                "produces": ["nut"],
+                "destroys": false,
+                "seasons": ["fall"]
+            },
+            "chop": {
+                "requires_match": true,
+                "produces": ["wood"],
+                "destroys": true
+            },
+            "saw": {
+                "requires_match": true,
+                "produces": ["wood"],
+                "destroys": true
+            }
+        },
+        "seasonal": {
+            "fall" : {
+                "spawns": ["nuts"],
+                "recolor": ["light_yellow", "dark_yellow", "light_red", "dark_red", "light_orange", "dark_orange", "light_brown", "dark_brown"]
+            },
+            "winter" : {
+                "redraw": ["dead_deciduous1.png"]
+            }
+        }
+    }
+}

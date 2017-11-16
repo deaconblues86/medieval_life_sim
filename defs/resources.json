@@ -1,0 +1,77 @@
+{
+    "charcoal": {
+        "images": ["charcoal.png"],
+        "interactions": {
+            "pickup": {
+                "destroys": true,
+                "place_in_inventory": true
+            },
+            "burn": {
+                "requires": "fire",
+                "produces": ["fire", "ash"],
+                "destroys": true
+            }
+        }
+    },
+    "ash": {
+        "images": ["ash.png"],
+        "interactions": {
+            "pickup": {
+                "destroys": true,
+                "place_in_inventory": true
+            }
+        }
+    },
+    "wood": {
+        "images": ["wood.png"],
+        "interactions": {
+            "pickup": {
+                "destroys": true,
+                "place_in_inventory": true
+            },
+            "burn": {
+                "requires": "fire",
+                "produces": ["fire", "ash"],
+                "destroys": true
+            }
+        }
+    },
+    "pinecone": {
+        "images": ["pinecone.png"],
+        "interactions": {
+            "pickup": {
+                "destroys": true,
+                "place_in_inventory": true
+            },
+            "burn": {
+                "requires": "fire",
+                "produces": ["fire", "ash"],
+                "destroys": true
+            },
+            "plant": {
+                "_comment": "need to actually implement",
+                "produces": ["ever_sapling"],
+                "destroys": true
+            }
+        }
+    },
+    "nut": {
+        "images": ["nut.png"],
+        "interactions": {
+            "pickup": {
+                "destroys": true,
+                "place_in_inventory": true
+            },
+            "burn": {
+                "requires": "fire",
+                "produces": ["fire", "ash"],
+                "destroys": true
+            },
+            "plant": {
+                "_comment": "need to actually implement",
+                "produces": ["dec_sapling"],
+                "destroys": true
+            }
+        }
+    }
+}

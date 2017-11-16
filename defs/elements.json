@@ -1,0 +1,19 @@
+{
+    "fire": {
+        "images": ["fire1.png", "fire2.png", "fire3, png"],
+        "animated": true,
+        "interactions": {
+            "douse": {
+                "requires_match": true,
+                "destroys": true
+            }
+        },
+        "emits": ["burn"],
+        "duration": 300
+    },
+    "water": {
+        "images": ["water.png"],
+        "emits": ["douse"],
+        "duration": 300
+    }
+}

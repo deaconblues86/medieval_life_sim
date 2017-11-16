@@ -49,7 +49,7 @@ def extract_random_from_dict(content, default):
     return create
 
 
-def load_image(name, color=None, blendtype=BLEND_MULT):
+def load_image(name, color=None, blendtype=None):
     fullname = os.path.join(image_dir, name)
     try:
         image = pygame.image.load(fullname)
@@ -61,6 +61,8 @@ def load_image(name, color=None, blendtype=BLEND_MULT):
     if color is not None:
         colors = load_json_def("colors.json")[0]
         color = tuple(colors.get(color, [0, 0, 0]))
+        if not blendtype:
+            blendtype = BLEND_MULT
         image.fill(color, None, blendtype)
 
     return image

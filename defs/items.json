@@ -1,0 +1,22 @@
+{
+    "axe": {
+        "images": ["axe.png"],
+        "pickup": {
+            "destroys": true,
+            "place_in_inventory": true
+            },
+        "emits": ["chop"],
+        "damage": "1d2",
+        "crit": "x2",
+        "tags": ["tool", "weapon", "axe"]
+    },
+    "saw": {
+        "images": ["saw.png"],
+        "pickup": {
+            "destroys": true,
+            "place_in_inventory": true
+            },
+        "emits": ["saw"],
+        "tags": ["tool"]
+    }
+}
