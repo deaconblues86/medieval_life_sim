@@ -79,16 +79,5 @@
             {"type": "developed", "weight": 0.5},
             {"type": "undeveloped", "weight": 1.0}
         ]
-    },
-    "ball": {
-        "components": {
-            "body": {
-                "images": ["ball.gif"]
-            }
-        },
-        "spawn_zones": [
-            {"type": "developed", "weight": 0.5},
-            {"type": "undeveloped", "weight": 1.0}
-        ]
     }
 }
