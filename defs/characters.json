@@ -23,7 +23,7 @@
         "_comment": "images aside, need to differentiate between armor stats regardless of image",
         "components": {
             "head": {
-                "images": ["head1.png", "head2.png"]
+                "images": ["head1.png"]
             },
             "face": {
                 "images": ["face1.png", "face2.png"]
@@ -43,7 +43,7 @@
     "wizard": {
         "components": {
             "head": {
-                "images": ["head1.png", "head2.png"]
+                "images": ["head1.png"]
             },
             "face": {
                 "images": ["face1.png", "face2.png"]
@@ -63,13 +63,13 @@
     "huntsman": {
         "components": {
             "head": {
-                "images": ["head1.png", "head2.png"]
+                "images": ["head1.png"]
             },
             "face": {
                 "images": ["face1.png", "face2.png"]
             },
             "adornment": {
-                "images": ["cap1.png", "hat2.png"]
+                "images": ["cap1.png", "hat1.png"]
             },
             "body": {
                 "images": ["leather1.png", "leather2.png"]

@@ -20,6 +20,14 @@ from constants import (
     speed,
     )
 
+blends = {
+    "mult": BLEND_MULT,
+    "add": BLEND_ADD,
+    "sub": BLEND_SUB,
+    "max": BLEND_MAX,
+    "min": BLEND_MIN
+}
+
 
 def load_json(name):
     fullname = os.path.join(def_dir, name)
@@ -63,7 +71,7 @@ def load_image(name, color=None, blendtype=None):
         color = tuple(colors.get(color, [0, 0, 0]))
         if not blendtype:
             blendtype = BLEND_MULT
-        image.fill(color, None, blendtype)
+        image.fill(color, None, blends[blendtype])
 
     return image
 

@@ -1,7 +1,17 @@
 {
     "evergreen": {
-        "images": ["evergreen1.png", "evergreen2.png"],
-        "colors": ["light_green", "dark_green", "light_brown", "dark_brown"],
+        "components": {
+            "branches": {
+                "images": ["evergreenbase1.png", "evergreenbase2.png"]
+            },
+            "foliage": {
+                "images": ["evergreen1.png", "evergreen2.png"],
+                "colors": ["light_green", "dark_green", "light_brown", "dark_brown"],
+                "blends": ["mult"]
+            },
+            "link_images": true,
+            "image_range": 2
+        },
         "interactions": {
             "burn": {
                 "requires_match": true,

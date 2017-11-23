@@ -93,12 +93,15 @@ class interact_window(pygame.sprite.Sprite):
 
 class base_sprite(pygame.sprite.Sprite):
     """ Accepts image, and optional color/blend arg """
-    def __init__(self, pos, **components):
+    def __init__(self, pos, image_index=None, **components):
         super().__init__()
         images = components.get("images")
         colors = components.get("colors")
         blends = components.get("blends")
-        img = images[random.randint(0, len(images) - 1)] if images else "None"
+        if not image_index:
+            image_index = random.randint(0, len(images) - 1)
+
+        img = images[image_index] if images else "None"
         img_color = colors[random.randint(0, len(colors) - 1)] if colors else None
         img_blend = blends[random.randint(0, len(blends) - 1)] if blends else None
         self.name = img
@@ -114,10 +117,22 @@ class base_sprite(pygame.sprite.Sprite):
 
 
 class base_object(pygame.sprite.AbstractGroup):
+    comp_meta = [
+        "link_images",
+        "image_range"
+        ]
+
     def __init__(self, pos, **kwargs):
         super().__init__()
+        image_index = None
         components = kwargs["components"]
-        self.add([base_sprite(pos, **components[comp]) for comp in components])
+        if components.get("link_images"):
+            try:
+                image_index = random.randint(0, components["image_range"] - 1)
+            except KeyError:
+                image_index = None
+
+        self.add([base_sprite(pos, image_index, **components[comp]) for comp in components if comp not in self.comp_meta])
         self.update_self()
 
     def update_self(self):

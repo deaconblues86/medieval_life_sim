@@ -42,22 +42,30 @@ def main():
     pygame.display.flip()
 
     characters, char_default = load_json_def("characters.json")
+    trees, tree_default = load_json_def("trees.json")
     create = extract_random_from_dict(characters, char_default)
     test = drifting_object(pos=(100, 0), **create)
 
-    p = extract_from_dict("player", characters, char_default)
-    player = player_object(pos=SCREENRECT.center, **p)
-
     balls = []
+    tree = base_object(pos=SCREENRECT.center, **trees["evergreen"])
+    balls.append(tree)
     for x in range(10):
-        balls.append(base_object(pos=(random.randint(0, ZONERECT.right), random.randint(0, ZONERECT.bottom)), **extract_from_dict("ball", characters, char_default)))
+        # balls.append(base_object(pos=(random.randint(0, ZONERECT.right), random.randint(0, ZONERECT.bottom)), **extract_from_dict("ball", characters, char_default)))
+        create = extract_random_from_dict(characters, char_default)
+        balls.append(base_object(pos=(random.randint(0, ZONERECT.right), random.randint(0, ZONERECT.bottom)), **create))
 
     # RenderPlain creates Sprite Group for chimp and mouse
-    allsprites = pygame.sprite.RenderPlain((test, player))
+    allsprites = pygame.sprite.RenderPlain((test,))
     allsprites.add(balls)
     print(allsprites.sprites())
     # Clock controls frame rate
     clock = pygame.time.Clock()
+
+    # Adding player last
+    p = extract_from_dict("player", characters, char_default)
+    player = player_object(pos=SCREENRECT.center, **p)
+
+    allsprites.add(player)
 
     interacting = False
     while True:
