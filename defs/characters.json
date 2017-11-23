@@ -17,7 +17,8 @@
             "body": {
                 "images": ["peasent1.png"]
             }
-        }
+        },
+        "name": "Player"
     },
     "knight": {
         "_comment": "images aside, need to differentiate between armor stats regardless of image",
@@ -38,7 +39,8 @@
         "spawn_zones": [
             {"type": "developed", "weight": 1.0},
             {"type": "undeveloped", "weight": 0.5}
-        ]
+        ],
+        "name": "Knight"
     },
     "wizard": {
         "components": {
@@ -58,7 +60,8 @@
         "spawn_zones": [
             {"type": "developed", "weight": 0.5},
             {"type": "undeveloped", "weight": 1.0}
-        ]
+        ],
+        "name": "Wizard"
     },
     "huntsman": {
         "components": {
@@ -78,6 +81,7 @@
         "spawn_zones": [
             {"type": "developed", "weight": 0.5},
             {"type": "undeveloped", "weight": 1.0}
-        ]
+        ],
+        "name": "Huntsman"
     }
 }

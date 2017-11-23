@@ -1,25 +1,19 @@
 import pygame
-import random
 from functools import reduce
-from helpers import (
+from src.helpers import (
     load_image,
-    load_sound,
-    load_json_def,
-    extract_from_dict,
-    extract_random_from_dict,
     check_move_bounds
     )
-from resources import (
+from src.resources import (
     cursor,
-    base_sprite,
     base_object,
-    player_object,
-    drifting_object,
     interact_window
     )
-from constants import (
+from src.map_generation import (
+    spawn_zone
+)
+from src.constants import (
     SCREENRECT,
-    PLAYERBOUNDS,
     ZONERECT
     )
 
@@ -41,35 +35,10 @@ def main():
     screen.blit(background, (0, 0))
     pygame.display.flip()
 
-    grid = [(x, y) for x in range(40, ZONERECT.right, 80) for y in range(40, ZONERECT.bottom, 80)]
-
-    characters, char_default = load_json_def("characters.json")
-    trees, tree_default = load_json_def("trees.json")
-    create = extract_random_from_dict(characters, char_default)
-    test = drifting_object(pos=grid[0], **create)
-
-    balls = []
-    for x in range(10):
-        pos = grid.pop(random.randint(0, len(grid)-1))
-        tree = base_object(pos=pos, **trees["evergreen"])
-        balls.append(tree)
-    for x in range(10):
-        # balls.append(base_object(pos=(random.randint(0, ZONERECT.right), random.randint(0, ZONERECT.bottom)), **extract_from_dict("ball", characters, char_default)))
-        pos = grid.pop(random.randint(0, len(grid)-1))
-        create = extract_random_from_dict(characters, char_default)
-        balls.append(base_object(pos=pos, **create))
-
-    allsprites = pygame.sprite.RenderPlain((test,))
-    allsprites.add(balls)
+    allsprites, player = spawn_zone()
 
     # Clock controls frame rate
     clock = pygame.time.Clock()
-
-    # Adding player last
-    p = extract_from_dict("player", characters, char_default)
-    player = player_object(pos=SCREENRECT.center, **p)
-
-    allsprites.add(player)
 
     interacting = False
     while True:
@@ -89,14 +58,11 @@ def main():
         if not interacting and keystate[pygame.K_SPACE]:
             target = player.rect.collidelistall(allsprites.sprites())
             if target is not None:
+                target_objs = list(set([base for x in target for base in allsprites.sprites()[x].groups() if isinstance(base, base_object)]))
                 # Creating selection of interactable Sprites in location
-                window = interact_window(None, options=[allsprites.sprites()[x] for x in target])
+                window = interact_window(None, options=target_objs)
                 allsprites.add(window)
                 interacting = True
-
-                # target = allsprites.sprites()[target]
-                # window = interact_window(target)
-                # allsprites.add(window)
 
         if interacting:
             pygame.event.wait()
@@ -118,7 +84,7 @@ def main():
                 print(choice, target)
                 interacting = False
                 # If choice was what to interact with, continue interacting
-                if isinstance(choice, base_sprite):
+                if isinstance(choice, base_object):
                     target = choice
                     window = interact_window(choice)
                     allsprites.add(window)

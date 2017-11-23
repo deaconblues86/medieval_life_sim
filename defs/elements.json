@@ -4,16 +4,18 @@
         "animated": true,
         "interactions": {
             "douse": {
-                "requires_match": true,
+                "requires_emitter": true,
                 "destroys": true
             }
         },
         "emits": ["burn"],
-        "duration": 300
+        "duration": 300,
+        "name": "Fire"
     },
     "water": {
         "images": ["water.png"],
         "emits": ["douse"],
         "duration": 300
-    }
+    },
+    "name": "Water"
 }

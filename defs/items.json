@@ -8,7 +8,8 @@
         "emits": ["chop"],
         "damage": "1d2",
         "crit": "x2",
-        "tags": ["tool", "weapon", "axe"]
+        "tags": ["tool", "weapon", "axe"],
+        "name": "Axe"
     },
     "saw": {
         "images": ["saw.png"],
@@ -17,6 +18,7 @@
             "place_in_inventory": true
             },
         "emits": ["saw"],
-        "tags": ["tool"]
+        "tags": ["tool"],
+        "name": "Saw"
     }
 }

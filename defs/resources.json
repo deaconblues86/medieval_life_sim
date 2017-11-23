@@ -11,7 +11,8 @@
                 "produces": ["fire", "ash"],
                 "destroys": true
             }
-        }
+        },
+        "name": "Charcoal"
     },
     "ash": {
         "images": ["ash.png"],
@@ -20,7 +21,8 @@
                 "destroys": true,
                 "place_in_inventory": true
             }
-        }
+        },
+        "name": "Ash"
     },
     "wood": {
         "images": ["wood.png"],
@@ -34,7 +36,8 @@
                 "produces": ["fire", "ash"],
                 "destroys": true
             }
-        }
+        },
+        "name": "Wood"
     },
     "pinecone": {
         "images": ["pinecone.png"],
@@ -53,7 +56,8 @@
                 "produces": ["ever_sapling"],
                 "destroys": true
             }
-        }
+        },
+        "name": "Pinecone"
     },
     "nut": {
         "images": ["nut.png"],
@@ -72,6 +76,7 @@
                 "produces": ["dec_sapling"],
                 "destroys": true
             }
-        }
+        },
+        "name": "Nut"
     }
 }

@@ -2,7 +2,6 @@ import pygame
 import os
 import json
 import random
-
 from pygame.locals import (
     BLEND_MULT,
     BLEND_ADD,
@@ -10,13 +9,10 @@ from pygame.locals import (
     BLEND_MAX,
     BLEND_MIN
     )
-
-from constants import (
+from src.constants import (
     image_dir,
     def_dir,
     audio_dir,
-    ZONERECT,
-    SCREENRECT,
     speed,
     )
 

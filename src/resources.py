@@ -2,13 +2,12 @@ import pygame
 import os
 import random
 from functools import reduce
-from helpers import (
+from src.helpers import (
     load_image
     )
-from constants import(
+from src.constants import (
     font_file,
     SCREENRECT,
-    ZONERECT,
     speed,)
 
 
@@ -52,14 +51,17 @@ class interact_window(pygame.sprite.Sprite):
 
         # Need to better define options vs interactions -- I believe they'll be different
         if options:
-            self.options = self.interactions = options
+            self.interactions = {x.name: x for x in options}
+            self.interactions["quit"] = True
+            self.options = [x.name for x in options]
             self.options.append("quit")
         else:
-            self.interactions = getattr(target, "interactions", ["test1", "test2", "test3", "test4"])
-            self.interactions.append("quit")
+            self.interactions = getattr(target, "interactions", {})
+            self.interactions["quit"] = True
             self.options = []
             for i in self.interactions:
                 self.options.append(i)
+            print(self.interactions, self.options)
 
         self.offset = 0
         self.update(None)
@@ -70,7 +72,7 @@ class interact_window(pygame.sprite.Sprite):
         elif key_press == "up":
             self.offset -= 1
         elif key_press == "select":
-            return self.interactions[self.offset]
+            return self.interactions[self.options[self.offset]]
 
         if self.offset < 0:
             self.offset = 0
@@ -78,15 +80,13 @@ class interact_window(pygame.sprite.Sprite):
         pos = 0
         self.offset = min(self.offset, len(self.options) - 1)
         self.image.fill((100, 50, 0))
-        for x in range(min(self.offset, len(self.options) - 3), min(self.offset + 3, len(self.options))):
+
+        for x in range(max(min(self.offset, len(self.options) - 3), 0), min(self.offset + 3, len(self.options))):
             color = self.color
             if x == self.offset:
                 color = self.selection
-            try:
-                option = self.font.render(self.interactions[x].name, 0, color)
-            except AttributeError:
-                option = self.font.render(self.interactions[x], 0, color)
 
+            option = self.font.render(self.options[x], 0, color)
             self.image.blit(option, (10, (pos * 50) + 12))
             pos += 1
 
@@ -107,6 +107,9 @@ class base_sprite(pygame.sprite.Sprite):
         self.name = img
         self.image = load_image(*(img, img_color, img_blend))
         self.rect = self.image.get_rect(center=pos)
+
+        if components.get("interactions"):
+            self.interactions = components.get("interactions")
 
     def update(self, *args):
         self._move(*args)
@@ -134,6 +137,10 @@ class base_object(pygame.sprite.AbstractGroup):
 
         self.add([base_sprite(pos, image_index, **components[comp]) for comp in components if comp not in self.comp_meta])
         self.update_self()
+
+        self.name = kwargs.get("name", "Unknown")
+        if kwargs.get("interactions"):
+            self.interactions = kwargs.get("interactions")
 
     def update_self(self):
         self.rect = reduce(lambda x, y: x.union(y), [s.rect for s in self.sprites()])
