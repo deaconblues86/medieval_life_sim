@@ -21,6 +21,9 @@ from src.constants import (
 
 def resolve_action(target, actor, action):
     sprites = []
+    if action is True:
+        return False
+
     if action.get("requires_emitter"):
         inv_match = [x for x in actor.inventory if x.emits == action]
         if getattr(actor, "emits", None) != action and not inv_match:
@@ -29,6 +32,7 @@ def resolve_action(target, actor, action):
 
     if action.get("place_in_inventory"):
         actor.inventory.append(target)
+        print(actor.inventory)
 
     if action.get("destroys"):
         target.kill()
@@ -115,6 +119,8 @@ def main():
                     interacting = True
                 else:
                     produced = resolve_action(target, player, choice)
+                    if produced:
+                        allsprites.add(produced)
 
         # if not interacting, operating under normal conditions
         if not interacting:

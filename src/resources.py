@@ -158,6 +158,10 @@ class base_object(pygame.sprite.AbstractGroup):
             else:
                 return False
 
+    def kill(self):
+        for s in self.sprites():
+            s.kill()
+
 
 class drifting_object(base_object):
     def __init__(self, pos, **kwargs):

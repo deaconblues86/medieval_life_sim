@@ -134,3 +134,7 @@ def check_move_bounds(scrolling, bounds, x_direction, y_direction, relation_to_b
             scrolling = m, (x_direction, y_direction)
 
         return scrolling
+
+
+def calculate_grid(zone_rect):
+    return [(x, y) for x in range(40, zone_rect.right, 80) for y in range(40, zone_rect.bottom, 80)]

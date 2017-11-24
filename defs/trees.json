@@ -25,7 +25,7 @@
             },
             "chop": {
                 "requires_emitter": true,
-                "produces": ["wood"],
+                "produces": ["wood", "pinecone"],
                 "destroys": true
             },
             "saw": {
@@ -60,7 +60,7 @@
             },
             "chop": {
                 "requires_emitter": true,
-                "produces": ["wood"],
+                "produces": ["wood", "nut"],
                 "destroys": true
             },
             "saw": {

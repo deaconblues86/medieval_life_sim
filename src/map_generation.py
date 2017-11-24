@@ -3,7 +3,8 @@ import pygame
 from src.helpers import (
     load_json_def,
     extract_random_from_dict,
-    extract_from_dict
+    extract_from_dict,
+    calculate_grid
     )
 from src.resources import (
     drifting_object,
@@ -17,7 +18,7 @@ from src.constants import (
 
 
 def spawn_zone():
-    spawn_grid = [(x, y) for x in range(40, ZONERECT.right, 80) for y in range(40, ZONERECT.bottom, 80)]
+    spawn_grid = calculate_grid(ZONERECT)
 
     characters, char_default = load_json_def("characters.json")
     trees, tree_default = load_json_def("trees.json")
