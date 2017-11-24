@@ -1,6 +1,8 @@
 {
     "fire": {
-        "images": ["fire1.png", "fire2.png", "fire3, png"],
+        "components": {
+            "images": ["fire1.png", "fire2.png", "fire3, png"]
+        },
         "animated": true,
         "interactions": {
             "douse": {
@@ -13,7 +15,9 @@
         "name": "Fire"
     },
     "water": {
-        "images": ["water.png"],
+        "components": {
+            "images": ["water.png"]
+        },
         "emits": ["douse"],
         "duration": 300
     },

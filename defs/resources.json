@@ -1,13 +1,17 @@
 {
     "charcoal": {
-        "images": ["charcoal.png"],
+        "components": {
+            "base": {
+                "images": ["charcoal.png"]
+            }
+        },
         "interactions": {
             "pickup": {
                 "destroys": true,
                 "place_in_inventory": true
             },
             "burn": {
-                "requires": "fire",
+                "requires_emitter": "burn",
                 "produces": ["fire", "ash"],
                 "destroys": true
             }
@@ -15,7 +19,11 @@
         "name": "Charcoal"
     },
     "ash": {
-        "images": ["ash.png"],
+        "components": {
+            "base": {
+                "images": ["ash.png"]
+            }
+        },
         "interactions": {
             "pickup": {
                 "destroys": true,
@@ -25,14 +33,18 @@
         "name": "Ash"
     },
     "wood": {
-        "images": ["wood.png"],
+        "components": {
+            "base": {
+                "images": ["wood.png"]
+            }
+        },
         "interactions": {
             "pickup": {
                 "destroys": true,
                 "place_in_inventory": true
             },
             "burn": {
-                "requires": "fire",
+                "requires_emitter": "burn",
                 "produces": ["fire", "ash"],
                 "destroys": true
             }
@@ -40,14 +52,18 @@
         "name": "Wood"
     },
     "pinecone": {
-        "images": ["pinecone.png"],
+        "components": {
+            "base": {
+                "images": ["pinecone.png"]
+            }
+        },
         "interactions": {
             "pickup": {
                 "destroys": true,
                 "place_in_inventory": true
             },
             "burn": {
-                "requires": "fire",
+                "requires_emitter": "burn",
                 "produces": ["fire", "ash"],
                 "destroys": true
             },
@@ -60,14 +76,18 @@
         "name": "Pinecone"
     },
     "nut": {
-        "images": ["nut.png"],
+        "components": {
+            "base": {
+                "images": ["nut.png"]
+            }
+        },
         "interactions": {
             "pickup": {
                 "destroys": true,
                 "place_in_inventory": true
             },
             "burn": {
-                "requires": "fire",
+                "requires_emitter": "burn",
                 "produces": ["fire", "ash"],
                 "destroys": true
             },

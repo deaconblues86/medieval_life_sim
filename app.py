@@ -2,7 +2,8 @@ import pygame
 from functools import reduce
 from src.helpers import (
     load_image,
-    check_move_bounds
+    check_move_bounds,
+    load_json_def
     )
 from src.resources import (
     cursor,
@@ -16,6 +17,29 @@ from src.constants import (
     SCREENRECT,
     ZONERECT
     )
+
+
+def resolve_action(target, actor, action):
+    sprites = []
+    if action.get("requires_emitter"):
+        inv_match = [x for x in actor.inventory if x.emits == action]
+        if getattr(actor, "emits", None) != action and not inv_match:
+            print(f"Missing required emitter: {action}")
+            return False
+
+    if action.get("place_in_inventory"):
+        actor.inventory.append(target)
+
+    if action.get("destroys"):
+        target.kill()
+
+    if action.get("produces"):
+        resources, resources_default = load_json_def("resources.json")
+        for item in action.get("produces"):
+            sprite = base_object(pos=target.rect.center, **resources[item])
+            sprites.append(sprite)
+
+    return sprites
 
 
 def main():
@@ -89,6 +113,8 @@ def main():
                     window = interact_window(choice)
                     allsprites.add(window)
                     interacting = True
+                else:
+                    produced = resolve_action(target, player, choice)
 
         # if not interacting, operating under normal conditions
         if not interacting:

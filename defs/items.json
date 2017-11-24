@@ -1,6 +1,8 @@
 {
     "axe": {
-        "images": ["axe.png"],
+        "components": {
+            "images": ["axe.png"]
+        },
         "pickup": {
             "destroys": true,
             "place_in_inventory": true
@@ -12,7 +14,9 @@
         "name": "Axe"
     },
     "saw": {
-        "images": ["saw.png"],
+        "components": {
+            "images": ["saw.png"]
+        },
         "pickup": {
             "destroys": true,
             "place_in_inventory": true

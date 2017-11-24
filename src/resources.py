@@ -134,13 +134,14 @@ class base_object(pygame.sprite.AbstractGroup):
                 image_index = random.randint(0, components["image_range"] - 1)
             except KeyError:
                 image_index = None
-
+        print(components, [comp for comp in components])
         self.add([base_sprite(pos, image_index, **components[comp]) for comp in components if comp not in self.comp_meta])
         self.update_self()
 
         self.name = kwargs.get("name", "Unknown")
         if kwargs.get("interactions"):
             self.interactions = kwargs.get("interactions")
+        self.inventory = []
 
     def update_self(self):
         self.rect = reduce(lambda x, y: x.union(y), [s.rect for s in self.sprites()])
