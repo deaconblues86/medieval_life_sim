@@ -4,7 +4,6 @@
             "images": ["axe.png"]
         },
         "pickup": {
-            "destroys": true,
             "place_in_inventory": true
             },
         "emits": ["chop"],
@@ -18,7 +17,6 @@
             "images": ["saw.png"]
         },
         "pickup": {
-            "destroys": true,
             "place_in_inventory": true
             },
         "emits": ["saw"],

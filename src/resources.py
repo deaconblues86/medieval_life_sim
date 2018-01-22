@@ -37,6 +37,29 @@ class cursor(pygame.sprite.Sprite):
         self.clicking = 0
 
 
+# WIP:  base_object is expected rather than Sprite.  Requires proper set up of message window (art, etc)
+class message_window(pygame.sprite.Sprite):
+    def __init__(self, message):
+        super().__init__()
+        # self.image = load_image(cursor_image, -1)
+        self.image = pygame.Surface((600, 40))
+        self.image.fill((100, 50, 0))
+        self.rect = self.image.get_rect(center=SCREENRECT.midbottom)
+        self.rect = self.rect.move((20, 0))
+
+        self.font = pygame.font.Font(os.path.join(font_file), 20)
+        self.color = pygame.Color('white')
+
+        self.message = self.font.render(message, 0, self.color)
+        self.image.blit(self.message, self.rect.center)
+        self.timer = 100
+
+    def update(self, *args):
+        self.timer -= 1
+        if self.timer == 0:
+            self.kill()
+
+
 class interact_window(pygame.sprite.Sprite):
     def __init__(self, target, options=None, image=None):
         super().__init__()
@@ -134,17 +157,17 @@ class base_object(pygame.sprite.AbstractGroup):
                 image_index = random.randint(0, components["image_range"] - 1)
             except KeyError:
                 image_index = None
-        print(components, [comp for comp in components])
         self.add([base_sprite(pos, image_index, **components[comp]) for comp in components if comp not in self.comp_meta])
-        self.update_self()
+        self.get_rect()
 
         self.name = kwargs.get("name", "Unknown")
         if kwargs.get("interactions"):
             self.interactions = kwargs.get("interactions")
         self.inventory = []
 
-    def update_self(self):
+    def get_rect(self):
         self.rect = reduce(lambda x, y: x.union(y), [s.rect for s in self.sprites()])
+        return self.rect
 
     def contains(self, obj):
         if isinstance(obj, pygame.Rect):
@@ -197,4 +220,4 @@ class player_object(base_object):
         for s in self.sprites():
             s.rect.move_ip(x_direction*self.speed, y_direction*self.speed)
             s.rect = s.rect.clamp(SCREENRECT)
-        self.update_self()
+        self.get_rect()

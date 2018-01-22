@@ -8,7 +8,8 @@ from src.helpers import (
 from src.resources import (
     cursor,
     base_object,
-    interact_window
+    interact_window,
+    message_window
     )
 from src.map_generation import (
     spawn_zone
@@ -19,31 +20,32 @@ from src.constants import (
     )
 
 
-def resolve_action(target, actor, action):
-    sprites = []
+def resolve_action(zone, target, actor, action):
     if action is True:
         return False
 
     if action.get("requires_emitter"):
-        inv_match = [x for x in actor.inventory if x.emits == action]
+        inv_match = [x for x in actor.inventory if getattr(x, "emits") == action]
         if getattr(actor, "emits", None) != action and not inv_match:
             print(f"Missing required emitter: {action}")
             return False
 
     if action.get("place_in_inventory"):
         actor.inventory.append(target)
+        zone.remove(target)
         print(actor.inventory)
-
-    if action.get("destroys"):
-        target.kill()
 
     if action.get("produces"):
         resources, resources_default = load_json_def("resources.json")
         for item in action.get("produces"):
-            sprite = base_object(pos=target.rect.center, **resources[item])
-            sprites.append(sprite)
+            target_rect = target.get_rect()
+            sprite = base_object(pos=target_rect.center, **resources[item])
+            zone.add(sprite)
 
-    return sprites
+    if action.get("destroys"):
+        target.kill()
+
+    return zone
 
 
 def main():
@@ -118,9 +120,9 @@ def main():
                     allsprites.add(window)
                     interacting = True
                 else:
-                    produced = resolve_action(target, player, choice)
-                    if produced:
-                        allsprites.add(produced)
+                    resolution = resolve_action(allsprites, target, player, choice)
+                    if resolution:
+                        allsprites = resolution
 
         # if not interacting, operating under normal conditions
         if not interacting:
